@@ -14,7 +14,11 @@ export class sortKaffe extends kaffe implements Imælk
 
     Pris(): number 
     {
-        return 20 - this.rabat;
+        if (this.rabat >= 1) 
+        {
+            return 20 - this.rabat;
+        }
+        return 20
     }
     
 }

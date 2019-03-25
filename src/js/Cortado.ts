@@ -1,4 +1,5 @@
 import { kaffe } from "./Kaffe";
+import { Imælk} from "./Imælk";
 
 export class cortado extends kaffe implements Imælk 
 {

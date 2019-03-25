@@ -1,4 +1,4 @@
-interface Imælk
+export interface Imælk
 {
     MIMælk():number;
 }

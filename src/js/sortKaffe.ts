@@ -1,4 +1,6 @@
 import { kaffe } from "./Kaffe";
+import { Imælk} from "./Imælk";
+
 
 export class sortKaffe extends kaffe implements Imælk
 {
@@ -20,5 +22,7 @@ export class sortKaffe extends kaffe implements Imælk
         }
         return 20
     }
+
+    
     
 }

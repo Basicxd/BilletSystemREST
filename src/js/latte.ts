@@ -1,17 +1,17 @@
 import { kaffe } from "./Kaffe";
 
-export class cortado extends kaffe implements Imælk 
+export class latte extends kaffe implements Imælk 
 {
     
 
     MIMælk(): number 
     {
-        return 25;
+        return 120;
     }
 
     Pris()
     {
-        return 25;
+        return 40;
     }
 
     

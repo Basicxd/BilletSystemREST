@@ -2,7 +2,7 @@ export abstract class kaffe
 {
     rabat:number;
 
-    constructor(rabat:number) 
+    constructor(rabat?:number) 
     {
         this.rabat = rabat;
     }

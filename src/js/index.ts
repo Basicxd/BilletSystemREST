@@ -1,36 +1,117 @@
-import { cortado } from "./cortado";
-import { latte } from "./Latte";
-import { sortKaffe } from "./sortKaffe";
-import { kaffe} from "./kaffe";
+import axios, {AxiosResponse, AxiosError} from "../../node_modules/axios/index";
+import {ICoin} from "../js/ICoin";
 
-//her laver jeg min liste af type array
-let liste:kaffe[] = new Array<kaffe>();
+const uri:string = "https://restcoinservicemikail.azurewebsites.net/api/coin/";
 
-//Bruger 
-liste.push(new cortado());
+let divElement:HTMLDivElement = <HTMLDivElement> document.getElementById("content")
+let buttonForAllCoins: HTMLButtonElement = <HTMLButtonElement> document.getElementById("getAllCoins")
+buttonForAllCoins.addEventListener("click", getAllCoin)
 
+let buttonForOneCoin:HTMLButtonElement = <HTMLButtonElement> document.getElementById("getOneCoinOKAY");  
+buttonForOneCoin.addEventListener('click',oneCoin);
 
-
-
-
-let c:cortado = new cortado();
-let l:latte = new latte();
-let s:sortKaffe = new sortKaffe(4);
-let sUdenRabat:sortKaffe = new sortKaffe();
+let buttonAddCoin : HTMLButtonElement = <HTMLButtonElement> document.getElementById("addButtonCoin");
+buttonAddCoin.addEventListener('click',addCoin);
 
 
-console.log(c.Styrke(), c.Pris(), c.MIMælk());
-console.log(l.Styrke(), l.Pris(), l.MIMælk());
-console.log(s.Styrke(), s.Pris(), s.MIMælk());
-console.log(sUdenRabat.Styrke(), sUdenRabat.Pris(), sUdenRabat.MIMælk());
+function CreateLiElement(tekst:string, classAttribut:string, id: number) : HTMLLIElement{
+    
+    let newLiElement = document.createElement('li');
+    let newText = document.createTextNode(tekst)
+    
+    newLiElement.setAttribute('class',classAttribut);
+    newLiElement.setAttribute('id',id.toString());
+    
+    newLiElement.appendChild(newText);
 
-console.log("1")
+    return newLiElement;
+}
+
+function getAllCoin():void {
+
+    axios.get<ICoin[]>(uri)
+    .then(function (response:AxiosResponse<ICoin[]>):void{
+
+        let olElement : HTMLOListElement = document.createElement('ol');
+
+        let x:number = 0;
+        response.data.forEach((coin : ICoin) => {
+            x++;
+            if(coin == null)
+              {
+                  olElement.appendChild(CreateLiElement("NULL element","error",x));
+              }
+            else
+              {
+                let tekst : string =  "Id: "+coin.id+" Genstand: " + coin.genstand + "Bud: " +coin.bud + "Navn: " +coin.navn;
+                olElement.appendChild(CreateLiElement(tekst,"r1",coin.id));
+              }
+            });
+        if (divElement.firstChild)
+          divElement.removeChild(divElement.firstElementChild);
+        
+        divElement.appendChild(olElement);
+    }
+    )
+    .catch(function (error:AxiosError):void{
+            divElement.innerHTML= error.message;        
+    })
+}
+
+function oneCoin():void {
+
+    let showOneCoin : HTMLInputElement = <HTMLInputElement> document.getElementById("getOneCoin");
+    let oneCoinValue : string = showOneCoin.value;
+    let newUri = uri + showOneCoin.value;
+
+    
+
+    axios.get<ICoin>(newUri)
+    .then(function (response:AxiosResponse<ICoin>):void{
 
 
-let sort = JSON.stringify(s.Styrke)
-console.log(sort)
+        let coin : ICoin = <ICoin>response.data;
+        let result : string = "<ol>";
+
+        if (response.data == null)
+        {
+            result += "<li> NULL element</li>"
+        }
+
+        else;
+        { 
+            result += "<li> <b>id</b>: "+ coin.id  + " <i>Genstand</i> :" + coin.genstand + " <i>Bud</i> :" + coin.bud + "<i> Navn</i> : " + coin.navn +"</li>"        
+        }
+
+       
+
+        result += "</ol>";
+
+        divElement.innerHTML = result;
+
+    }
+    )
+    .catch(function (error:AxiosError):void{
+            divElement.innerHTML= error.message;        
+    })
+}
+
+function addCoin():void{
+ 
+    // let idelement: HTMLInputElement = <HTMLInputElement>document.getElementById("addId");
+    let genstandelement: HTMLInputElement = <HTMLInputElement>document.getElementById("addGenstand");
+    let budelenemt: HTMLInputElement = <HTMLInputElement>document.getElementById("addBud");
+    let navnelenemt: HTMLInputElement = <HTMLInputElement>document.getElementById("addNavn");
+
+    
+    // let myID: number = +idelement.value;
+    let myGenstand:string = genstandelement.value;
+    let myBud : number = +budelenemt.value;
+    let myNavn : string = navnelenemt.value;
 
 
-var plants = ['broccoli', 'cauliflower', 'cabbage', 'kale', 'tomato'];
-
-console
+    axios.post<ICoin>(uri,{Genstand:myGenstand, Bud:myBud, Navn:myNavn})
+    .then((response:AxiosResponse) => {console.log("response " +response.status + " " +response.statusText )})
+    .catch((error:AxiosError) => {console.log(error);} )
+    .then( ()=> {co.innerHTML='<h2> er i finally </h2>'})
+}

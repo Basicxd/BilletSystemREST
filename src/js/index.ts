@@ -28,13 +28,15 @@ function CreateLiElement(tekst:string, classAttribut:string, id: number) : HTMLL
 }
 
 function getAllCoin():void {
-
+    // Get icoin array
     axios.get<ICoin[]>(uri)
+    // Wrap icoin array indtil et reponse 
     .then(function (response:AxiosResponse<ICoin[]>):void{
 
         let olElement : HTMLOListElement = document.createElement('ol');
 
         let x:number = 0;
+        // Den tager AxiosResponse data ind i foreach
         response.data.forEach((coin : ICoin) => {
             x++;
             if(coin == null)
@@ -113,5 +115,4 @@ function addCoin():void{
     axios.post<ICoin>(uri,{Genstand:myGenstand, Bud:myBud, Navn:myNavn})
     .then((response:AxiosResponse) => {console.log("response " +response.status + " " +response.statusText )})
     .catch((error:AxiosError) => {console.log(error);} )
-    .then( ()=> {co.innerHTML='<h2> er i finally </h2>'})
 }

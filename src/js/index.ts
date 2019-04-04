@@ -28,7 +28,7 @@ function CreateLiElement(tekst:string, classAttribut:string, id: number) : HTMLL
 }
 
 function getAllCoin():void {
-    // Get icoin array
+    // Get  typen icoin array
     axios.get<ICoin[]>(uri)
     // Wrap icoin array indtil et reponse 
     .then(function (response:AxiosResponse<ICoin[]>):void{

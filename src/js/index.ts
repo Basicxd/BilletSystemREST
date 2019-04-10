@@ -1,17 +1,12 @@
 import axios, {AxiosResponse, AxiosError} from "../../node_modules/axios/index";
-import {ICoin} from "../js/ICoin";
+import {IBillet} from "../js/ICoin";
 
-const uri:string = "https://restcoinservicemikail.azurewebsites.net/api/coin/";
+const uri:string = "https://localhost:44325/api/[";
 
 let divElement:HTMLDivElement = <HTMLDivElement> document.getElementById("content")
+
 let buttonForAllCoins: HTMLButtonElement = <HTMLButtonElement> document.getElementById("getAllCoins")
 buttonForAllCoins.addEventListener("click", getAllCoin)
-
-let buttonForOneCoin:HTMLButtonElement = <HTMLButtonElement> document.getElementById("getOneCoinOKAY");  
-buttonForOneCoin.addEventListener('click',oneCoin);
-
-let buttonAddCoin : HTMLButtonElement = <HTMLButtonElement> document.getElementById("addButtonCoin");
-buttonAddCoin.addEventListener('click',addCoin);
 
 
 function CreateLiElement(tekst:string, classAttribut:string, id: number) : HTMLLIElement{
@@ -28,10 +23,15 @@ function CreateLiElement(tekst:string, classAttribut:string, id: number) : HTMLL
 }
 
 function getAllCoin():void {
+
+    let showtime : HTMLSelectElement = <HTMLSelectElement> document.getElementById("gettingdone");
+    let oneCoinValue : string = showtime.value;
+    let newUri = uri + showtime.value;
+
     // Get  typen icoin array
-    axios.get<ICoin[]>(uri)
+    axios.get<IBillet[]>(uri)
     // Wrap icoin array indtil et reponse 
-    .then(function (response:AxiosResponse<ICoin[]>):void{
+    .then(function (response:AxiosResponse<IBillet[]>):void{
 
         let olElement : HTMLOListElement = document.createElement('ol');
 
@@ -65,8 +65,6 @@ function oneCoin():void {
     let showOneCoin : HTMLInputElement = <HTMLInputElement> document.getElementById("getOneCoin");
     let oneCoinValue : string = showOneCoin.value;
     let newUri = uri + showOneCoin.value;
-
-    
 
     axios.get<ICoin>(newUri)
     .then(function (response:AxiosResponse<ICoin>):void{

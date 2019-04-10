@@ -1,9 +1,7 @@
-export interface ICoin
+export interface IBillet
 {    
-    id:number
-    genstand:string;
-    bud:number;
-    navn:string;
+    pris:number
+    type:string;
 
 }
 
